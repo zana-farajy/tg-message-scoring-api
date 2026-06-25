@@ -1,0 +1,235 @@
+# Rule-Based Configuration for Telegram Message Valuation
+
+thresholds:
+  min_score_valuable: 8
+  min_score_maybe_valuable: 5
+  max_score_maybe_valuable: 7
+  min_category_matches_for_maybe: 2
+  max_negative_score_allowed: 4  # If negative score is strictly greater than this, reject.
+  confidence_mapping:
+    low: [0.2, 0.49]
+    medium: [0.5, 0.74]
+    high: [0.75, 0.89]
+    very_high: [0.9, 0.99]
+
+fast_reject:
+  min_char_length: 20
+  max_link_ratio: 0.60
+  spam_keywords:
+    - "کازینو"
+    - "شرط بندی"
+    - "بت"
+    - "ارز دیجیتال"
+    - "سیگنال"
+    - "ترید"
+    - "فارکس"
+    - "قرعه کشی"
+    - "جایزه"
+    - "تخفیف ویژه"
+    - "فروش فوری"
+
+positive_categories:
+  hiring:
+    # 3 points for any matched keyword
+    keyword_score: 3.0
+    keywords:
+      - "استخدام"
+      - "دعوت به همکاری"
+      - "جذب نیرو"
+      - "نیازمند"
+      - "نیرو میخوایم"
+      - "نیرو می‌خواهیم"
+      - "فرصت شغلی"
+      - "رزومه"
+      - "ارسال رزومه"
+      - "موقعیت شغلی"
+      - "developer"
+      - "programmer"
+      - "designer"
+      - "backend"
+      - "frontend"
+      - "fullstack"
+      - "devops"
+      - "ui/ux"
+      - "react"
+      - "node"
+      - "python"
+      - "django"
+      - "fastapi"
+      - "godot"
+      - "unity"
+    # 2 points for modifiers
+    modifier_score: 2.0
+    modifiers:
+      - "حقوق"
+      - "تمام وقت"
+      - "پاره وقت"
+      - "حضوری"
+      - "دورکاری"
+      - "پروژه‌ای"
+      - "سابقه"
+      - "مهارت"
+      - "ارسال رزومه"
+
+  project_request:
+    keyword_score: 3.0
+    keywords:
+      - "پروژه دارم"
+      - "انجام پروژه"
+      - "سفارش پروژه"
+      - "کسی هست"
+      - "نیاز دارم"
+      - "میخوام بسازم"
+      - "پیاده سازی"
+      - "طراحی سایت"
+      - "طراحی اپ"
+      - "ساخت ربات"
+      - "اسکریپت"
+      - "فریلنس"
+      - "قیمت"
+      - "هزینه"
+      - "زمان تحویل"
+    modifier_score: 2.0
+    modifiers:
+      - "react"
+      - "python"
+      - "django"
+      - "fastapi"
+      - "php"
+      - "laravel"
+      - "javascript"
+      - "node"
+      - "html"
+      - "css"
+      - "vue"
+      - "flutter"
+      - "android"
+      - "ios"
+      - "ربات"
+      - "سایت"
+      - "اپلیکیشن"
+      - "برنامه نویسی"
+
+  collaboration:
+    keyword_score: 3.0
+    keywords:
+      - "همکاری"
+      - "شریک"
+      - "شراکت"
+      - "هم بنیانگذار"
+      - "co-founder"
+      - "partner"
+      - "partnership"
+      - "contract"
+      - "تیم میزنیم"
+      - "استارتاپ"
+      - "سرمایه گذار"
+    modifier_score: 2.0
+    modifiers:
+      - "مدیر"
+      - "برنامه نویس"
+      - "طراح"
+      - "بازاریاب"
+      - "ایده"
+      - "سرمایه"
+      - "فنی"
+      - "cto"
+      - "ceo"
+
+negative_scoring:
+  # Penalty points per occurrence or category match
+  default_penalty: 2.0
+  categories:
+    product_sale:
+      penalty: 3.0
+      keywords:
+        - "فروش محصول"
+        - "خرید محصول"
+        - "فروش عمده"
+        - "قیمت دایرکت"
+        - "تخفیف خورده"
+        - "ارسال به سراسر"
+        - "خرید"
+        - "فروش"
+        - "حراج"
+    general_ads:
+      penalty: 3.0
+      keywords:
+        - "تبلیغات"
+        - "تبلیغ"
+        - "بنر"
+        - "تعرفه"
+        - "سین خوردن"
+        - "بازدید"
+        - "تبادل"
+    member_boosting:
+      penalty: 3.0
+      keywords:
+        - "ممبر"
+        - "عضو"
+        - "سین"
+        - "ویو"
+        - "فالوور"
+        - "لایک"
+        - "پیج"
+        - "ممبرگیری"
+    crypto_spam:
+      penalty: 4.0
+      keywords:
+        - "ارز دیجیتال"
+        - "سیگنال"
+        - "ترید"
+        - "فارکس"
+        - "بیت کوین"
+        - "اتریوم"
+        - "کریپتو"
+        - "crypto"
+        - "trade"
+        - "forex"
+    paid_education:
+      penalty: 2.0
+      keywords:
+        - "دوره آموزشی"
+        - "پکیج آموزشی"
+        - "خرید دوره"
+        - "ثبت نام دوره"
+        - "آموزش پولی"
+        - "کلاس آموزشی"
+    casual_chat:
+      penalty: 2.0
+      keywords:
+        - "سلام خوبید"
+        - "کسی هست"
+        - "انلاینه"
+        - "چخبر"
+        - "گپ"
+        - "چت"
+        - "کسی آنلاین هست"
+        - "سلام"
+        - "خوبید"
+    news_jokes:
+      penalty: 2.0
+      keywords:
+        - "اخبار"
+        - "فوری"
+        - "خبرساز"
+        - "میم"
+        - "جوک"
+        - "خنده دار"
+        - "لطیفه"
+    link_only_intro:
+      penalty: 3.0
+      keywords:
+        - "عضو کانال"
+        - "جوین شید"
+        - "کانال ما"
+        - "لینک زیر"
+        - "کانال تلگرام"
+    promotions:
+      penalty: 2.0
+      keywords:
+        - "تخفیف"
+        - "حراج"
+        - "ثبت نام"
+        - "قرعه کشی"
+        - "جایزه"
